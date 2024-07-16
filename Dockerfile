@@ -8,18 +8,16 @@ ENV PATH=$CONDA_DIR/bin:$PATH
 
 # Arguments
 ARG PYTHON_VERSION=3.9
-ARG USERNAME=hskim97
 
 # Update and install necessary packages
 RUN apt-get update && apt-get install -y \
     wget bzip2 ca-certificates curl git vim mc \
-    software-properties-common apt-transport-https nautilus \
+    software-properties-common apt-transport-https \
     && rm -rf /var/lib/apt/lists/* \
     # Configure git
     && git config --global user.name "Hakseon97" \
-    && git config --global user.email "gkrtjs0122@naver.com" \
-    && useradd -ms /bin/bash $USERNAME
-    
+    && git config --global user.email "gkrtjs0122@naver.com" 
+
 # Install Miniconda
 RUN wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh \
     && /bin/bash /tmp/miniconda.sh -b -p $CONDA_DIR \
@@ -36,9 +34,7 @@ SHELL ["/bin/bash", "--login", "-c"]
 HEALTHCHECK CMD conda --version || exit 1
 
 # Create and set working directory
-WORKDIR /home/$USERNAME/workspace
-
-USER $USERNAME
+WORKDIR /home/workspace
 
 # Set the default command to bash
 CMD ["/bin/bash"]
